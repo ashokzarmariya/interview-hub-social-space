@@ -1,221 +1,213 @@
 
-import { Calendar, Briefcase, Users, BarChart } from 'lucide-react';
-import AppSidebar from '@/components/layout/AppSidebar';
-import StatsCard from '@/components/dashboard/StatsCard';
-import RecruiterOpenings from '@/components/dashboard/RecruiterOpenings';
-import TopCandidates from '@/components/dashboard/TopCandidates';
-import CandidateActivity from '@/components/dashboard/CandidateActivity';
-
-// Mock data
-const openPositions = [
-  {
-    id: "1",
-    title: "Senior Frontend Developer",
-    department: "Engineering",
-    applicants: 24,
-    posted: "May 5, 2025",
-    status: "active" as const
-  },
-  {
-    id: "2",
-    title: "UX/UI Designer",
-    department: "Design",
-    applicants: 18,
-    posted: "May 8, 2025",
-    status: "active" as const
-  },
-  {
-    id: "3",
-    title: "DevOps Engineer",
-    department: "Infrastructure",
-    applicants: 12,
-    posted: "May 10, 2025",
-    status: "active" as const
-  },
-  {
-    id: "4",
-    title: "Product Manager",
-    department: "Product",
-    applicants: 9,
-    posted: "May 12, 2025",
-    status: "draft" as const
-  }
-];
-
-const topCandidates = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    position: "Senior Frontend Developer",
-    score: 92,
-    status: "pending" as const
-  },
-  {
-    id: "2",
-    name: "Alex Chen",
-    position: "UX/UI Designer",
-    score: 88,
-    status: "interviewed" as const
-  },
-  {
-    id: "3",
-    name: "Michael Rodriguez",
-    position: "DevOps Engineer",
-    score: 85,
-    status: "pending" as const
-  },
-  {
-    id: "4",
-    name: "Jessica Williams",
-    position: "Product Manager",
-    score: 90,
-    status: "offer" as const
-  }
-];
-
-const candidateActivity = [
-  {
-    id: "1",
-    date: "May 14, 2025",
-    newApplications: 12,
-    interviewsScheduled: 8,
-    feedbackReceived: 5
-  },
-  {
-    id: "2",
-    date: "May 13, 2025",
-    newApplications: 9,
-    interviewsScheduled: 6,
-    feedbackReceived: 7
-  },
-  {
-    id: "3",
-    date: "May 12, 2025",
-    newApplications: 14,
-    interviewsScheduled: 9,
-    feedbackReceived: 4
-  },
-  {
-    id: "4",
-    date: "May 11, 2025",
-    newApplications: 7,
-    interviewsScheduled: 5,
-    feedbackReceived: 6
-  },
-  {
-    id: "5",
-    date: "May 10, 2025",
-    newApplications: 11,
-    interviewsScheduled: 7,
-    feedbackReceived: 3
-  },
-  {
-    id: "6",
-    date: "May 9, 2025",
-    newApplications: 8,
-    interviewsScheduled: 4,
-    feedbackReceived: 5
-  },
-  {
-    id: "7",
-    date: "May 8, 2025",
-    newApplications: 10,
-    interviewsScheduled: 6,
-    feedbackReceived: 4
-  }
-];
+import { useState } from 'react';
+import { useLocation } from 'wouter';
+import { 
+  Container, Grid, Paper, Typography, Box, 
+  List, ListItem, ListItemText, ListItemIcon, 
+  Avatar, Button, Chip, AppBar, Toolbar
+} from '@mui/material';
+import WorkIcon from '@mui/icons-material/Work';
+import PeopleIcon from '@mui/icons-material/People';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
 const RecruiterDashboard = () => {
+  const [, navigate] = useLocation();
+
+  const handleSwitchToCandidateDashboard = () => {
+    navigate('/');
+  };
+
+  const openPositions = [
+    { id: 1, title: 'Senior React Developer', applications: 24, status: 'Active' },
+    { id: 2, title: 'UI/UX Designer', applications: 18, status: 'Active' },
+    { id: 3, title: 'Product Manager', applications: 12, status: 'Paused' },
+  ];
+
+  const topCandidates = [
+    { id: 1, name: 'Jane Smith', position: 'Senior React Developer', score: 92, status: 'Interview Scheduled' },
+    { id: 2, name: 'Mike Johnson', position: 'UI/UX Designer', score: 88, status: 'Technical Test' },
+    { id: 3, name: 'Sarah Brown', position: 'Product Manager', score: 85, status: 'Review' },
+  ];
+
+  const upcomingInterviews = [
+    { id: 1, candidate: 'Jane Smith', position: 'Senior React Developer', date: '2023-05-20', time: '10:00 AM' },
+    { id: 2, candidate: 'Alex Taylor', position: 'React Developer', date: '2023-05-24', time: '2:00 PM' },
+    { id: 3, candidate: 'Chris Anderson', position: 'UI/UX Designer', date: '2023-05-25', time: '11:30 AM' },
+  ];
+
   return (
-    <div className="flex min-h-screen bg-background">
-      <AppSidebar />
+    <div className="min-h-screen bg-gray-50">
+      <AppBar position="static" className="mb-4">
+        <Toolbar className="flex justify-between">
+          <Typography variant="h6" component="div">
+            InterviewPlatform
+          </Typography>
+          <Button 
+            color="inherit" 
+            onClick={handleSwitchToCandidateDashboard}
+          >
+            Switch to Candidate View
+          </Button>
+        </Toolbar>
+      </AppBar>
       
-      <div className="flex flex-col flex-1 md:pl-64">
-        {/* Header */}
-        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b p-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Recruiter Dashboard</h1>
-            <div className="flex items-center gap-4">
-              <button className="rounded-full bg-primary/10 p-2 text-primary">
-                <span className="sr-only">Notifications</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </header>
+      <Container maxWidth="xl" className="mb-8">
+        <Typography variant="h4" component="h1" className="mb-6 text-gray-800 font-bold">
+          Recruiter Dashboard
+        </Typography>
 
-        {/* Main content */}
-        <main className="flex-1 p-4 md:p-6 animate-fade-in">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold mb-2">Welcome back, Recruiter!</h2>
-            <p className="text-muted-foreground">
-              Here's what's happening with your candidates and open positions.
-            </p>
-          </div>
+        <Grid container spacing={3}>
+          {/* Stats Overview */}
+          <Grid item xs={12} className="mb-4">
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6} md={3}>
+                <Paper className="p-4 flex flex-col items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                  <Typography variant="h5">3</Typography>
+                  <Typography variant="body1">Open Positions</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Paper className="p-4 flex flex-col items-center bg-gradient-to-r from-green-500 to-green-600 text-white">
+                  <Typography variant="h5">54</Typography>
+                  <Typography variant="body1">Applications</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Paper className="p-4 flex flex-col items-center bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+                  <Typography variant="h5">12</Typography>
+                  <Typography variant="body1">Interviews</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Paper className="p-4 flex flex-col items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                  <Typography variant="h5">5</Typography>
+                  <Typography variant="body1">Offers Sent</Typography>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Grid>
 
-          {/* Stats */}
-          <div className="grid gap-4 md:grid-cols-4 mb-8">
-            <StatsCard 
-              title="Open Positions" 
-              value="12" 
-              description="3 new this week" 
-              icon={<Briefcase className="h-6 w-6" />}
-            />
-            <StatsCard 
-              title="Total Candidates" 
-              value="87" 
-              description="24 new applications"
-              icon={<Users className="h-6 w-6" />} 
-            />
-            <StatsCard 
-              title="Interviews This Week" 
-              value="32" 
-              description="8 scheduled today" 
-              icon={<Calendar className="h-6 w-6" />}
-            />
-            <StatsCard 
-              title="Conversion Rate" 
-              value="24%" 
-              description="2% higher than last month" 
-              icon={<BarChart className="h-6 w-6" />}
-            />
-          </div>
+          {/* Open Positions */}
+          <Grid item xs={12} md={6}>
+            <Paper className="p-4">
+              <Box className="flex items-center mb-4">
+                <WorkIcon className="text-blue-500 mr-2" />
+                <Typography variant="h6">Open Positions</Typography>
+              </Box>
+              <List>
+                {openPositions.map(position => (
+                  <ListItem key={position.id} className="bg-gray-50 mb-2 rounded">
+                    <ListItemText
+                      primary={position.title}
+                      secondary={`${position.applications} applications`}
+                    />
+                    <Chip 
+                      label={position.status} 
+                      color={position.status === 'Active' ? 'success' : 'default'}
+                      size="small"
+                      className="mr-2"
+                    />
+                    <Button variant="contained" size="small">
+                      View
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+              <Box className="mt-3 text-right">
+                <Button variant="outlined" color="primary">
+                  Add New Position
+                </Button>
+              </Box>
+            </Paper>
+          </Grid>
 
-          {/* Dashboard content */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <RecruiterOpenings 
-              positions={openPositions} 
-              className="lg:col-span-2"
-            />
-            <TopCandidates 
-              candidates={topCandidates} 
-              className="lg:col-span-1"
-            />
-            <CandidateActivity 
-              activityData={candidateActivity} 
-              className="lg:col-span-3"
-            />
-          </div>
-        </main>
+          {/* Top Candidates */}
+          <Grid item xs={12} md={6}>
+            <Paper className="p-4">
+              <Box className="flex items-center mb-4">
+                <PeopleIcon className="text-blue-500 mr-2" />
+                <Typography variant="h6">Top Candidates</Typography>
+              </Box>
+              <List>
+                {topCandidates.map(candidate => (
+                  <ListItem key={candidate.id} className="bg-gray-50 mb-2 rounded">
+                    <ListItemIcon>
+                      <Avatar className="bg-blue-600">{candidate.name[0]}</Avatar>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={candidate.name}
+                      secondary={`${candidate.position} • Score: ${candidate.score}%`}
+                    />
+                    <Chip 
+                      label={candidate.status} 
+                      color="primary"
+                      size="small"
+                      className="mr-2"
+                    />
+                    <Button variant="contained" size="small">
+                      View
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          </Grid>
 
-        {/* Footer */}
-        <footer className="border-t p-4 text-center text-sm text-muted-foreground">
-          © 2025 InterviewHub. All rights reserved.
-        </footer>
-      </div>
+          {/* Upcoming Interviews */}
+          <Grid item xs={12}>
+            <Paper className="p-4">
+              <Box className="flex items-center mb-4">
+                <EventNoteIcon className="text-blue-500 mr-2" />
+                <Typography variant="h6">Upcoming Interviews</Typography>
+              </Box>
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white">
+                  <thead>
+                    <tr>
+                      <th className="py-2 px-4 border-b text-left">Candidate</th>
+                      <th className="py-2 px-4 border-b text-left">Position</th>
+                      <th className="py-2 px-4 border-b text-left">Date</th>
+                      <th className="py-2 px-4 border-b text-left">Time</th>
+                      <th className="py-2 px-4 border-b text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {upcomingInterviews.map(interview => (
+                      <tr key={interview.id}>
+                        <td className="py-2 px-4 border-b">{interview.candidate}</td>
+                        <td className="py-2 px-4 border-b">{interview.position}</td>
+                        <td className="py-2 px-4 border-b">{interview.date}</td>
+                        <td className="py-2 px-4 border-b">{interview.time}</td>
+                        <td className="py-2 px-4 border-b">
+                          <Button variant="contained" size="small" color="primary">
+                            Join
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Paper>
+          </Grid>
+
+          {/* Activity Chart */}
+          <Grid item xs={12}>
+            <Paper className="p-4">
+              <Box className="flex items-center mb-4">
+                <AssignmentIcon className="text-blue-500 mr-2" />
+                <Typography variant="h6">Recent Activity</Typography>
+              </Box>
+              <Box className="h-64 flex items-center justify-center bg-gray-100">
+                <Typography variant="body1" className="text-gray-500">
+                  Activity chart will be displayed here
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
     </div>
   );
 };

@@ -1,40 +1,32 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Dashboard from './Dashboard';
-import { Button } from '@/components/ui/button';
+import { useLocation } from 'wouter';
+import { AppBar, Toolbar, Typography, Button, Box, Paper, Grid } from '@mui/material';
+import CandidateDashboard from './CandidateDashboard';
 
 const Index = () => {
-  const navigate = useNavigate();
-  const [userType, setUserType] = useState<'candidate' | 'recruiter'>('candidate');
-
-  const handleSwitchToCandidateDashboard = () => {
-    setUserType('candidate');
-    navigate('/');
-  };
+  const [, navigate] = useLocation();
 
   const handleSwitchToRecruiterDashboard = () => {
-    setUserType('recruiter');
     navigate('/recruiter');
   };
 
   return (
-    <div>
-      <div className="fixed top-4 right-4 z-50 flex space-x-2">
-        <Button 
-          variant={userType === 'candidate' ? 'default' : 'outline'} 
-          onClick={handleSwitchToCandidateDashboard}
-        >
-          Candidate View
-        </Button>
-        <Button 
-          variant={userType === 'recruiter' ? 'default' : 'outline'} 
-          onClick={handleSwitchToRecruiterDashboard}
-        >
-          Recruiter View
-        </Button>
-      </div>
-      <Dashboard />
+    <div className="min-h-screen bg-gray-50">
+      <AppBar position="static" className="mb-4">
+        <Toolbar className="flex justify-between">
+          <Typography variant="h6" component="div">
+            InterviewPlatform
+          </Typography>
+          <Button 
+            color="inherit" 
+            onClick={handleSwitchToRecruiterDashboard}
+          >
+            Switch to Recruiter View
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <CandidateDashboard />
     </div>
   );
 };

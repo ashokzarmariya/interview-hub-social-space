@@ -1,34 +1,35 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import RecruiterDashboard from "./pages/RecruiterDashboard";
+import { useState } from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Router, Route } from 'wouter';
+import Index from './pages/Index';
+import RecruiterDashboard from './pages/RecruiterDashboard';
 
-const queryClient = new QueryClient();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3f51b5',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/interviews" element={<Index />} />
-          <Route path="/community" element={<Index />} />
-          <Route path="/profile" element={<Index />} />
-          <Route path="/settings" element={<Index />} />
-          <Route path="/recruiter" element={<RecruiterDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Route path="/" component={Index} />
+        <Route path="/recruiter" component={RecruiterDashboard} />
+      </Router>
+    </ThemeProvider>
+  );
+}
 
 export default App;
